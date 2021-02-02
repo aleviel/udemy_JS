@@ -11,19 +11,61 @@ document.addEventListener('DOMContentLoaded', () => {
             "Скотт Пилигрим против..."
         ]
     };
-    const filmList = document.querySelector('.promo__interactive-list'),
-        addMovieForm = document.querySelector('.add'),
-        addMovieInput = addMovieForm.querySelector('.adding__input'),
-        addCheckBox = addMovieForm.querySelector('[type="checkbox"]');
 
-    document.querySelectorAll('.promo__adv img').forEach((item) => item.remove());
     document.querySelector('.promo__genre').textContent = 'Драма';
     document.querySelector('.promo__bg').style.backgroundImage = 'url(./img/bg.jpg)';
 
-    filmList.innerHTML = '';
-    movieDB.movies.sort();
-    movieDB.movies.forEach((item, i) => {
-        filmList.innerHTML += `<li>${i + 1}. ${item}</li>`;
+    const filmList = document.querySelector('.promo__interactive-list'),
+        adv = document.querySelectorAll('.promo__adv img'),
+        addForm = document.querySelector('.add'),
+        addInput = document.querySelector('.adding__input'),
+        addCheckBox = document.querySelector('[type="checkbox"]');
+
+    function delItem(items) {
+        items.forEach((item) => item.remove());
+    }
+
+    function sortList(list) {
+        list.sort();
+    }
+
+    function createMovieList(list, movieList) {
+        movieList.innerHTML = '';
+        sortList(list);
+        list.forEach((item, i) => {
+            movieList.innerHTML += `<li>${i + 1}. ${item}</li>`;
+        });
+    }
+
+    function addItem(item, list) {
+        let newFilm = item.value;
+
+        for (let i = 0; i < 1; i++) {
+            if (newFilm == '') {
+                break;
+            } else {
+                if (addCheckBox.checked) {
+                    console.log('added favorite movie');
+                }
+                if (newFilm.length < 21) {
+                    list.push(newFilm);
+                } else {
+                    newFilm = `${newFilm.substring(0, 21)}...`;
+                    list.push(newFilm);
+                }
+                break;
+            }
+        }
+    }
+
+    delItem(adv);
+    createMovieList(movieDB.movies, filmList);
+
+    addForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        addItem(addInput, movieDB.movies);
+        addForm.reset();
+        createMovieList(movieDB.movies, filmList);
     });
 
 });
