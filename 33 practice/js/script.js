@@ -33,7 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
         movieList.innerHTML = '';
         sortList(list);
         list.forEach((item, i) => {
-            movieList.innerHTML += `<li>${i + 1}. ${item}</li>`;
+            movieList.innerHTML += `
+            <li class="promo__interactive-item">${i + 1}. ${item}
+                <div class="delete"></div>
+            </li>
+        `;
+        });
+
+        movieList.querySelectorAll('.delete').forEach((item, i) => {
+            item.addEventListener('click', () => {
+                item.parentElement.remove();
+                list.splice(i, 1);
+                createMovieList(list, movieList);
+            });
         });
     }
 
